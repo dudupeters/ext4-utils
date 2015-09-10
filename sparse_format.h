@@ -26,6 +26,7 @@ typedef struct sparse_header {
   __le32	image_checksum; /* CRC32 checksum of the original data, counting "don't care" */
 				/* as 0. Standard 802.3 polynomial, use a Public Domain */
 				/* table implementation */
+  __le32    android;
 } sparse_header_t;
 
 #define SPARSE_HEADER_MAGIC	0xed26ff3a
@@ -39,6 +40,7 @@ typedef struct chunk_header {
   __le16	reserved1;
   __le32	chunk_sz;	/* in blocks in output image */
   __le32	total_sz;	/* in bytes of chunk input file including chunk header and data */
+  __le32    android;
 } chunk_header_t;
 
 /* Following a Raw or Fill chunk is data.  For a Raw chunk, it's the data in chunk_sz * blk_sz.

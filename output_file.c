@@ -141,7 +141,8 @@ static sparse_header_t sparse_header = {
 	.blk_sz = 0,
 	.total_blks = 0,
 	.total_chunks = 0,
-	.image_checksum = 0
+	.image_checksum = 0,
+	.android = 0
 };
 
 static u8 *zero_buf;
@@ -164,6 +165,7 @@ static int emit_skip_chunk(struct output_file *out, u64 skip_len)
 	chunk_header.reserved1 = 0;
 	chunk_header.chunk_sz = skip_len / info.block_size;
 	chunk_header.total_sz = CHUNK_HEADER_LEN;
+	chunk_header.android = info.block_size;
 	ret = out->ops->write(out, (u8 *)&chunk_header, sizeof(chunk_header));
 	if (ret < 0)
 		return -1;
@@ -226,6 +228,7 @@ static int write_chunk_raw(struct output_file *out, u64 off, u8 *data, int len)
 	chunk_header.reserved1 = 0;
 	chunk_header.chunk_sz = rnd_up_len / info.block_size;
 	chunk_header.total_sz = CHUNK_HEADER_LEN + rnd_up_len;
+	chunk_header.android = 0x08054465;
 	ret = out->ops->write(out, (u8 *)&chunk_header, sizeof(chunk_header));
 
 	if (ret < 0)
